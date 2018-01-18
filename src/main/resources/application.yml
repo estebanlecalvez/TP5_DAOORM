@@ -1,0 +1,36 @@
+logging.level:
+  com.mydigitalschool.dao_orm.cqrs: DEBUG
+  org.hibernate.SQL: DEBUG
+
+# port http (https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-change-the-http-port)
+server.port: 8080
+
+spring:
+  # pour avoir des logs colorés dans la console
+  output.ansi.enabled: always
+  # permet à Spring de créer un bean datasource injectable dans les DAO (https://tomcat.apache.org/tomcat-8.0-doc/jdbc-pool.html#Common_Attributes)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#      # nombre initial de connexions dans le pool utilisé par la dataSource
+#      initial-size: 5
+    url: jdbc:mysql://localhost:3306/daoormcqrs?useSSL=false&serverTimezone=UTC
+    username: daoormcqrsuser
+    password: daoormcqrspwd
+  jpa:
+    # génère la base de données au démarrage
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      # none (production), validate, update, create, create-drop. https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html
+      ddl-auto: none
+      # optimisations pour MySQL5+
+      dialect: org.hibernate.dialect.MySQL57InnoDBDialect
+      # gestion du pool de connexions
+      c3p0:
+        min_size: 5
+        max_size: 20
+  # désactiver le restart en production
+  devtools.restart:
+    enabled: true
+    additional-paths: src/main/java/com/mydigitalschool/dao_orm/cqrs
+
